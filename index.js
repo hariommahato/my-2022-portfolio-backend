@@ -20,10 +20,16 @@ app.use("/about", aboutRouter);
 app.use("/project",projectRouter);
 app.use("/contact", contactRouter);
 
+
+app.use(express.static(path.join(__dirname,"./client")));
+app.get("*",(req,res)=>{
+  res.sendFile(path.join(__dirname,"./client/build","index.html"))
+
+})
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT || 3003, () => {
       console.log(
         "App connected to mongo and running on port " + process.env.PORT
       );
